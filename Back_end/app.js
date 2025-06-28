@@ -14,7 +14,7 @@ import MongoStore from 'connect-mongo';
 dotenv.config()
 
 const app = express();
-
+app.set("trust proxy", 1);
 
 
 app.use(cors({
@@ -39,22 +39,19 @@ async function main() {
 }
 
 const sessionOptions = {
-  secret: "myNameIsKhan",
+  secret: "yourSecret",
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB,
-    touchAfter: 24 * 3600,
-  }),
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB }),
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    maxAge: 1000 * 60 * 60 * 24 * 7,
+    secure: true, // <-- IMPORTANT in production (HTTPS)
+    sameSite: "none", // <-- REQUIRED for cross-origin cookies
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
 };
-
 app.use(session(sessionOptions));
+
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -66,6 +63,9 @@ passport.deserializeUser(User.deserializeUser())
 app.get('/check-auth', (req, res) => {
   console.log("Auth check:", req.isAuthenticated?.(), req.user);
   res.json({ isAuthenticated: req.isAuthenticated?.() ?? false });
+});
+app.get("/whoami", (req, res) => {
+  res.json({ user: req.user || null });
 });
 
 app.get("/search", async (req, res) => {
