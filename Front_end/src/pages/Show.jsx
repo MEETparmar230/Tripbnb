@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Rating from '@mui/material/Rating';
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 export default function Show() {
@@ -37,7 +38,7 @@ export default function Show() {
   }, [id]);
 
   const fetchListing = () => {
-    axios.get(`http://localhost:8080/listings/${id}`, { withCredentials: true })
+    axios.get(`${API}/listings/${id}`, { withCredentials: true })
       .then(res => {
         setListing(res.data.listing);
         setIsAuth(res.data.isAuthenticated);
@@ -47,7 +48,7 @@ export default function Show() {
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:8080/listings/${id}`,{withCredentials:true})
+    axios.delete(`${API}/listings/${id}`,{withCredentials:true})
       .then(res => {
         console.log("Listing deleted:", res.data.listing);
         navigate('/');
@@ -77,7 +78,7 @@ if (hasReviewed) {
 
     setReviewErr({});
 
-    axios.post(`http://localhost:8080/listings/${id}/reviews`, { review }, {
+    axios.post(`${API}/listings/${id}/reviews`, { review }, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     }).then(res => {
@@ -92,7 +93,7 @@ if (hasReviewed) {
   };
 
   const handleReviewDelete = (reviewId) => {
-    axios.delete(`http://localhost:8080/listings/${id}/reviews/${reviewId}`,{withCredentials: true})
+    axios.delete(`${API}/listings/${id}/reviews/${reviewId}`,{withCredentials: true})
       .then(res => {
         console.log("Review deleted:", res.data);
         fetchListing();
