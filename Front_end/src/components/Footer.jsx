@@ -7,6 +7,9 @@ export default function Footer() {
       <div className='ms-5'>
         &copy; 2025 Tripbnb
       </div>
+      <div className='text-sm text-gray-600 text-center  md:block lg:block hidden '>
+          This is a personal project created by Meet Parmar for educational purposes. Inspired by Airbnb.
+        </div>
       <div className='flex justify-center gap-5 me-5'>
         <a href=""><i className="fa-brands fa-instagram"></i></a>
         <a href=""><i className="fa-brands fa-facebook"></i></a>
@@ -15,7 +18,7 @@ export default function Footer() {
       
       
     </div>
-    <div className='text-sm text-gray-600 text-center mx-5'>
+    <div className='text-sm text-gray-600 text-center mx-5 md:hidden lg:hidden block'>
           This is a personal project created by Meet Parmar for educational purposes. Inspired by Airbnb.
         </div>
     </div>

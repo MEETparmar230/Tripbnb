@@ -23,14 +23,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
 
 main()
   .then(() => console.log("Connected to database"))
   .catch((err) => console.error(err));
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(process.env.MONGODB);
 }
 
 const sessionOptions ={

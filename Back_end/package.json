@@ -21,6 +21,7 @@
     "joi": "^17.13.3",
     "mapbox-gl": "^3.13.0",
     "method-override": "^3.0.0",
+    "mongodb": "^6.17.0",
     "mongoose": "^8.14.2",
     "multer": "^2.0.1",
     "multer-storage-cloudinary": "^4.0.0",
