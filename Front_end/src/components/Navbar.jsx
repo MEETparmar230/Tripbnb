@@ -43,7 +43,7 @@ export default function Navbar() {
 
     useEffect(() => {
         checkAuth();
-    }, []);
+    }, [location.pathname]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
