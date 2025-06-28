@@ -46,11 +46,11 @@ const sessionOptions = {
   store: MongoStore.create({ mongoUrl: process.env.MONGODB }),
   cookie: {
     httpOnly: true,
-    secure: true, // <-- IMPORTANT in production (HTTPS)
-    sameSite: "none", // <-- REQUIRED for cross-origin cookies
-    maxAge: 1000 * 60 * 60 * 24 * 7
+    secure: true,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
   }
-};
+}
 app.use(session(sessionOptions));
 
 
