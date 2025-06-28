@@ -21,26 +21,39 @@ export const signUp =async (req, res) => {
 }
 
 export const login =  async (req, res, next) => {
+  console.log("📥 Login request received:", req.body); // log input
+
   Passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err);
+    if (err) {
+      console.error("❌ Passport error:", err);
+      return next(err);
+    }
 
     if (!user) {
+      console.warn("⚠️ Invalid credentials:", info);
       return res.status(401).json({ message: info?.message || 'Invalid credentials' });
     }
 
     req.login(user, (err) => {
-      if (err) return next(err);
-      return res.json({
-  message: 'Welcome! You are logged in!',
-  user: {
-    _id: user._id,
-    username: user.username
-  },
-  isAuthenticated: true
-});
+      if (err) {
+        console.error("❌ Login session error:", err);
+        return next(err);
+      }
+
+      console.log("✅ User logged in:", user.username);
+      console.log("🔐 Session ID:", req.sessionID);
+      res.json({
+        message: 'Welcome! You are logged in!',
+        user: {
+          _id: user._id,
+          username: user.username
+        },
+        isAuthenticated: true
+      });
     });
   })(req, res, next);
 }
+
 
 export const logOut = (req,res,next)=>{
   req.logout((err)=>{
