@@ -18,7 +18,11 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [
+    'https://tripbnb-sand.vercel.app',
+    'https://tripbnb-git-main-meetparmar2362004-1225s-projects.vercel.app',
+    'https://tripbnb-fd307ffgh-meetparmar2362004-1225s-projects.vercel.app'
+  ],
   credentials: true
 }))
 app.use(express.json());
