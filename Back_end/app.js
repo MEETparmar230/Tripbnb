@@ -19,11 +19,7 @@ app.set("trust proxy", 1);
 const PORT = process.env.PORT || 8080;
 
 app.use(cors({
-  origin: [
-    'https://tripbnb-sand.vercel.app',
-    'https://tripbnb-git-main-meetparmar2362004-1225s-projects.vercel.app',
-    'https://tripbnb-f1b7fzedw-meetparmar2362004-1225s-projects.vercel.app/'
-  ],
+  origin:'https://tripbnb-sand.vercel.app',
   credentials: true
 }))
 app.use(express.json());
