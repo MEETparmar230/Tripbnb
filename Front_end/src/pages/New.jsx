@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+const API = import.meta.env.VITE_BACKEND_URL;
+
 
 export default function New() {
   const navigate = useNavigate()
@@ -18,7 +20,7 @@ export default function New() {
   const [isAuth,setIsAuth] = useState(false)
 
   useEffect(()=>{
-    axios.get("http://localhost:8080/check-auth",{withCredentials:true})
+    axios.get(`${API}/check-auth`,{withCredentials:true})
     .then((res)=>setIsAuth(res.data.isAuthenticated))
   },[])
 
@@ -60,7 +62,7 @@ export default function New() {
 
 console.log("Sending data:", formPayload.get("title"), formPayload.get("image"));
 
-    axios.post("http://localhost:8080/listings", formPayload, {
+    axios.post(`${API}/listings`, formPayload, {
       withCredentials:true
     })
       .then(res => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -27,7 +28,7 @@ export default function Edit() {
   );
 
   useEffect(() => {
-  axios.get(`http://localhost:8080/listings/${id}`, { withCredentials: true })
+  axios.get(`${API}/listings/${id}`, { withCredentials: true })
     .then(res => {
       const listing = res.data.listing || res.data;
       setFormData({
@@ -84,7 +85,7 @@ if (formData.newImage) {
   formDataToSend.append('image', formData.newImage);
 }
 
-    axios.put(`http://localhost:8080/listings/${id}`, formDataToSend, {
+    axios.put(`${API}/listings/${id}`, formDataToSend, {
 
 withCredentials:true,
 headers:{"Content-Type":"multipart/form-data"}

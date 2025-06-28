@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -21,7 +22,7 @@ export default function Search() {
     
 if (!country) return;
     axios
-      .get(`http://localhost:8080/search?country=${country}`)
+      .get(`${API}/search?country=${country}`)
       .then((res) => {
         setListings(res.data.listings);
         

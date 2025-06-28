@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import HomePng from '../assets/Home.png'
 import Searchbox from './Searchbox';
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -22,7 +23,7 @@ export default function Navbar() {
     const buttonRef = useRef(null);
 
     const checkAuth = () => {
-        axios.get('http://localhost:8080/check-auth', { withCredentials: true })
+        axios.get(`${API}/check-auth`, { withCredentials: true })
             .then((res) => {
                 setIsAuth(Boolean(res.data.isAuthenticated))
             })
@@ -31,7 +32,7 @@ export default function Navbar() {
 
     const handleLogOut = () => {
         axios
-            .get('http://localhost:8080/logout', { withCredentials: true })
+            .get(`${API}/logout`, { withCredentials: true })
             .then(() => {
                 setIsAuth(false);
                 navigate('/');

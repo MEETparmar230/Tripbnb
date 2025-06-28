@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 export default function SignUp() {
@@ -23,7 +24,7 @@ export default function SignUp() {
 
   try {
     const response = await axios.post(
-      'http://localhost:8080/signup',
+      `${API}/signup`,
       formData,
       {
         headers: {

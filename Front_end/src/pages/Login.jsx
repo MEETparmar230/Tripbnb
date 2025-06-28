@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 
@@ -24,7 +25,7 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const response = await axios.post('http://localhost:8080/login', formData, {
+      const response = await axios.post(`${API}/login`, formData, {
         headers: {
           'Content-Type': 'application/json'
         },

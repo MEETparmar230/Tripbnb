@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API = import.meta.env.VITE_BACKEND_URL;
 
 export default function Home() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function Home() {
   
   const checkAuthAndListings = () => {
     axios
-      .get('http://localhost:8080/listings', { withCredentials: true })
+      .get(`${API}/listings`, { withCredentials: true })
       .then((res) => {
         setAllListings(res.data.listings);
         
