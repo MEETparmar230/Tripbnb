@@ -39,18 +39,17 @@ async function main() {
 }
 
 const sessionOptions = {
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB,
-    ttl: 7 * 24 * 60 * 60 
-  }),
-  secret: "process.env.SECRET",
+  secret: "myNameIsKhan",
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000, 
-    httpOnly: true
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: 'none',   
+    secure: true         
   }
-};
+}
 app.use(session(sessionOptions))
 app.use(passport.initialize())
 app.use(passport.session())
