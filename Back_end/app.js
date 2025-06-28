@@ -16,6 +16,7 @@ dotenv.config()
 const app = express();
 app.set("trust proxy", 1);
 
+const PORT = process.env.PORT || 8080;
 
 app.use(cors({
   origin: [
@@ -93,6 +94,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong", error: err.message });
 });
 
-app.listen(8080, () => {
-  console.log("Server started on port 8080");
-});
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));
