@@ -1,0 +1,125 @@
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
+const Listing = require("./models/listing.js")
+
+const methodOverride = require("method-override");
+
+const cors = require("cors")
+
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride("_method"))
+
+const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+
+main().then(() => { console.log("connected to databse") }).catch((err) => { console.log(err) })
+
+async function main() {
+    await mongoose.connect(MONGO_URL)
+}
+
+function asyncWrap(fn){
+    return function (req,res,next){
+        fn(req,res,next).catch(err => next(err))
+    }
+}
+
+app.get("/", (req, res) => {
+    res.send("working")
+})
+
+//index route
+app.get("/listings",asyncWrap( async (req, res) => {
+    const alllistings = await Listing.find({})
+    res.render("listings/index.ejs", { alllistings })
+})) 
+
+//new route
+app.get("/listings/new", (req, res) => {
+    res.render("listings/new.ejs")
+})
+
+// create route
+app.post("/listings" , asyncWrap(async (req, res) => {
+    let { title, des, img, price, location, country } = req.body;
+    const newlisting = new Listing({
+        title: title,
+        des: des,
+        img: img,
+        price: price,
+        location: location,
+        country: country
+    })
+    await newlisting.save()
+    console.log(newlisting)
+    res.redirect("/listings")
+}))
+
+// edit route
+app.get("/listings/:id/edit",asyncWrap( async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id)
+    res.render("listings/edit.ejs", { listing })
+}))
+
+//update route
+app.put("/listings/:id",asyncWrap( async (req, res) => {
+    let { id } = req.params;
+    let { title, des, img, price, location, country } = req.body;
+
+    await Listing.findByIdAndUpdate(id, {
+        title: title,
+        des: des,
+        img: img,
+        price: price,
+        location: location,
+        country: country
+    })
+    res.redirect(`/listings/${id}`)
+}))
+
+app.delete("/listings/:id",asyncWrap( async (req,res)=>{
+    const {id} = req.params
+    let { title, des, img, price, location, country } = req.body;
+    await Listing.findByIdAndDelete(id)
+    console.log("listing deleted")
+    res.redirect("/listings")
+
+}))
+
+//show route
+app.get("/listings/:id",asyncWrap( async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id)
+    if(!listing){
+    const err = new Error("Listing Not Found")
+    err.status = 404
+    throw err;
+}
+
+    res.render("listings/show.ejs", { listing })
+
+
+}))
+
+app.use((err,req,res,next)=>{
+    console.log(err.name)
+    next(err)
+})
+
+ //Error Handler
+app.use((err,req,res,next)=>{
+    let {status = 500, message = "some error occured"} = err;
+    res.status(status).send(message)
+    
+    
+})
+
+
+
+app.listen(8080, () => {
+    console.log("server started on port 8080")
+})
