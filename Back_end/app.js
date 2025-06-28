@@ -60,6 +60,14 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+
+
+
+// Use routers
+app.use('/listings', listingRouter);
+app.use('/listings/:id/reviews',reviewRouter)
+app.use('/', userRouter);  
+
 app.get('/check-auth', (req, res) => {
   console.log("Auth check:", req.isAuthenticated?.(), req.user);
   res.json({ isAuthenticated: req.isAuthenticated?.() ?? false });
@@ -79,13 +87,6 @@ app.get("/search", async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 });
-
-
-// Use routers
-app.use('/listings', listingRouter);
-app.use('/listings/:id/reviews',reviewRouter)
-app.use('/', userRouter);  
-         
 
 app.use((err, req, res, next) => {
   console.error(err);
