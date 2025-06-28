@@ -38,19 +38,24 @@ async function main() {
   await mongoose.connect(process.env.MONGODB);
 }
 
-session({
-    secret: "myNameIsKhan",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // only secure in prod
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    },
-  })
+const sessionOptions = {
+  secret: "myNameIsKhan",
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB,
+    touchAfter: 24 * 3600,
+  }),
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  }
+};
 
-app.use(session(sessionOptions))
+app.use(session(sessionOptions));
+
 app.use(passport.initialize())
 app.use(passport.session())
 
