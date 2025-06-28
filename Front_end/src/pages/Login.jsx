@@ -22,27 +22,32 @@ export default function Login() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault();
 
-    try {
-      const response = await axios.post(`${API}/login`, formData, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      })
-      alert('log in successful!')
-      navigate("/")
+  try {
+    const response = await axios.post(`${API}/login`, formData, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+
+    alert('log in successful!');
+    console.log("Login response:", response.data);
+
+    // Test cookie/session
+    const whoami = await axios.get(`${API}/whoami`, { withCredentials: true });
+    console.log("User info from /whoami:", whoami.data);
+
+    navigate("/");
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      alert(`Error: ${error.response.data.message}`);
+    } else {
+      alert('Something went wrong.');
     }
-    catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert(`Error: ${error.response.data.message}`)
-      } else {
-        alert('Something went wrong.')
-      }
-      console.error(error)
-    }
+    console.error("Login error:", error);
   }
+}
+
 
   return (
     <div className='bg-gray-100 pt-10 pb-10 h-full'>
