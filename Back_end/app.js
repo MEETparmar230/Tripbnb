@@ -10,6 +10,7 @@ import User from './models/user.js'
 import reviewRouter from './routes/review.js';
 import dotenv from "dotenv"
 import Listing from './models/listing.js'
+import MongoStore from 'connect-mongo';
 dotenv.config()
 
 const app = express();
@@ -33,17 +34,19 @@ async function main() {
   await mongoose.connect(process.env.MONGODB);
 }
 
-const sessionOptions ={
-  secret:"myNameIsKhan",
-  resave:false,
-  saveUninitialized:false,
-  cookie:{
-    expires:Date.now()+7*24*60*60*1000,
-    maxAge:7*24*60*60*1000,
-    httpOnly:true
+const sessionOptions = {
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB,
+    ttl: 7 * 24 * 60 * 60 
+  }),
+  secret: "process.env.SECRET",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 7 * 24 * 60 * 60 * 1000, 
+    httpOnly: true
   }
-}
-
+};
 app.use(session(sessionOptions))
 app.use(passport.initialize())
 app.use(passport.session())
