@@ -213,13 +213,12 @@ export default function Show({ serverError, setServerError}) {
             />
             <div className="mx-5">
               <h1 className="text-2xl font-semibold p-1">{listing.title}</h1>
-              <p>
-                Owned by{" "}
-                <i className="font-medium">@{listing.owner?.username}</i>
+              <p className='p-1 font-medium'>
+                Owned by <i className="font-bold">@{listing.owner?.username}</i>
               </p>
-              <h4 className="text-xl p-1 opacity-75">{listing.description}</h4>
+              <h4 className="text-lg p-1 opacity-75">{listing.description}</h4>
 
-              <div className="my-2">
+              <div className="mb-5">
                 <p className="text-xl p-1">
                   Price: ₹
                   {Number(listing.price || 0).toLocaleString("en-IN")}

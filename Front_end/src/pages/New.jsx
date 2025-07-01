@@ -120,7 +120,7 @@ export default function New({ serverError, setServerError }) {
       ) : isAuth ? (
         <div className="bg-gray-100 py-6 px-5 mx-4">
           <div className="bg-white max-w-130 mx-auto py-5 px-5 rounded-xl">
-            <h3 className="text-2xl font-semibold text-center mb-5">Create a New Listing</h3>
+           
 
             <div className="max-w-130 mx-auto">
               <form
@@ -131,26 +131,26 @@ export default function New({ serverError, setServerError }) {
               >
                 <label className="font-semibold" htmlFor="title">Title:</label>
                 <input
-                  className="border rounded-md mb-2 p-1"
+                  className="border rounded-md  p-1"
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
                 />
-                {error.title && <p className="text-red-500 text-sm mb-2">{error.title}</p>}
+                {error.title ? <p className="text-red-500 text-sm ">{error.title}</p>:<div className='h-5'></div>}
 
                 <label className="font-semibold" htmlFor="description">Description:</label>
                 <textarea
-                  className="border rounded-md mb-2 p-1"
+                  className="border rounded-md  p-1"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                 />
-                {error.description && <p className="text-red-500 text-sm mb-2">{error.description}</p>}
+                {error.description ? <p className="text-red-500 text-sm mb-2">{error.description}</p>:<div className='h-5'></div>}
 
                 <label className="font-semibold">Upload Image</label>
                 <input
-                  className="border rounded-md p-1"
+                  className="border rounded-md p-1 "
                   type="file"
                   name="image"
                   accept=".jpg,.jpeg,.png,.avif"
@@ -170,7 +170,7 @@ export default function New({ serverError, setServerError }) {
                     setServerError('');
                   }}
                 />
-                {error.image && <p className="text-red-500 text-sm mb-2">{error.image}</p>}
+                {error.image ? <p className="text-red-500 text-sm h-5">{error.image}</p>:<div className='h-5'></div>}
 
                 <div className="inline md:flex sm:flex lg:flex justify-center gap-10">
                   <div className="grid grid-cols-1">
@@ -183,7 +183,7 @@ export default function New({ serverError, setServerError }) {
                       onChange={handleChange}
                     />
                     {error.location ? (
-                      <p className="text-red-500 text-sm mb-2">{error.location}</p>
+                      <p className="text-red-500 text-sm ">{error.location}</p>
                     ) : (
                       <div className="h-6"></div>
                     )}
@@ -198,7 +198,7 @@ export default function New({ serverError, setServerError }) {
                       onChange={handleChange}
                     />
                     {error.country ? (
-                      <p className="text-red-500 text-sm mb-2">{error.country}</p>
+                      <p className="text-red-500 text-sm ">{error.country}</p>
                     ) : (
                       <div className="h-6"></div>
                     )}
@@ -207,13 +207,13 @@ export default function New({ serverError, setServerError }) {
 
                 <label className="font-semibold" htmlFor="price">Price:</label>
                 <input
-                  className="border rounded-md mb-2 px-2 w-50 p-1"
+                  className="border rounded-md  px-2 w-50 p-1"
                   type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
                 />
-                {error.price && <p className="text-red-500 text-sm mb-2">{error.price}</p>}
+                {error.price ? <p className="text-red-500 text-sm mb-1">{error.price}</p>:<div className='h-5'></div>}
 
                 <button
                   className="bg-green-500 px-3 py-2 rounded-lg my-2 text-white hover:bg-green-600"
