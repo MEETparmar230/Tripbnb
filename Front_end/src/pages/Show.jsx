@@ -178,7 +178,7 @@ export default function Show({ serverError, setServerError}) {
   return (
   <>
     {loading ? (
-      <div className="h-screen flex items-center justify-center mt-50 gap-2">
+      <div className=" flex items-center justify-center mt-50 gap-2">
         <svg className="animate-spin h-5 w-5 text-blue-500" viewBox="0 0 24 24">
           <circle
             className="opacity-25"

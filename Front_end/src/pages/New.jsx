@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const API = import.meta.env.VITE_BACKEND_URL;
 
-export default function New({ serverError, setServerError}) {
+export default function New({ serverError, setServerError }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -20,6 +20,7 @@ export default function New({ serverError, setServerError}) {
   const [isAuth, setIsAuth] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [loading, setLoading] = useState(false);
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/avif'];
 
   useEffect(() => {
     setAuthenticating(true);
@@ -47,6 +48,7 @@ export default function New({ serverError, setServerError}) {
     if (formData.location.trim() === '') newError.location = 'Location is required';
     if (formData.country.trim() === '') newError.country = 'Country is required';
     if (!formData.image) newError.image = 'Image is required';
+
     return newError;
   };
 
@@ -78,7 +80,8 @@ export default function New({ serverError, setServerError}) {
         const message = res.data.message;
         if (message === 'Listing created') {
           navigate('/');
-        } else {
+        }
+        else {
           setServerError(message);
         }
       })
@@ -87,6 +90,10 @@ export default function New({ serverError, setServerError}) {
       })
       .finally(() => setLoading(false));
   };
+
+
+
+
 
   return (
     <>
@@ -143,11 +150,24 @@ export default function New({ serverError, setServerError}) {
 
                 <label className="font-semibold">Upload Image</label>
                 <input
-                  className="border rounded-md mb-5 p-1"
+                  className="border rounded-md p-1"
                   type="file"
                   name="image"
+                  accept=".jpg,.jpeg,.png,.avif"
                   onChange={(e) => {
-                    setFormData({ ...formData, image: e.target.files[0] });
+                    const file = e.target.files[0];
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/avif'];
+
+                    if (!file) return;
+
+                    if (!allowedTypes.includes(file.type)) {
+                      setServerError('Only JPG, PNG and AVIF files are allowed.');
+                      setFormData({ ...formData, image: null });
+                      return;
+                    }
+
+                    setFormData({ ...formData, image: file });
+                    setServerError('');
                   }}
                 />
                 {error.image && <p className="text-red-500 text-sm mb-2">{error.image}</p>}
