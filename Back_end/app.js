@@ -19,9 +19,13 @@ app.set("trust proxy", 1);
 const PORT = process.env.PORT || 8080;
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://your-frontend.vercel.app'],
+  origin: [
+    'http://localhost:5173',
+    'https://tripbnb-sand.vercel.app',
+    'https://tripbnb-git-main-meetparmar2362004-1225s-projects.vercel.app'
+  ],
   credentials: true
-}))
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,7 +48,7 @@ const sessionOptions = {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    maxAge: 1000 * 60 * 60 * 24 * 7 
   }
 }
 app.use(session(sessionOptions));

@@ -12,8 +12,10 @@ useEffect(()=>{
     },[serverError,setServerError])
     if (!serverError) return null
     return (
-        <div className='mx-auto flex justify-center mt-3'>
+        <div className='bg-gray-100'>
+        <div className='mx-auto flex justify-center mt-3 '>
             <p className='border border-red-500 rounded-xl text-red-500 px-2 py-1  mx-5'>{serverError}</p>
+        </div>
         </div>
   )
 }
