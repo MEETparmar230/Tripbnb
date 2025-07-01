@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 const API = import.meta.env.VITE_BACKEND_URL;
 
 
-export default function SignUp() {
+export default function SignUp({ serverError, setServerError}) {
   const navigate = useNavigate()
+  const [signing , setSigning] = useState(false)
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -22,6 +23,9 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
+  setSigning(true);
+  setServerError(null);
+
   try {
     const response = await axios.post(
       `${API}/signup`,
@@ -33,23 +37,25 @@ export default function SignUp() {
         withCredentials: true
       }
     );
-    
-    alert('User registered successfully!');
-    navigate("/")
 
-  } catch (error) {
-    if (error.response) {
-      alert(`Error: ${error.response.data.message}`);
+    if (response.data.message === 'User was registered') {
+      navigate("/");
     } else {
-      alert('Something went wrong.');
+      setServerError(response.data.message);
     }
+  } catch (error) {
+    setServerError(error.response?.data?.message || 'Something went wrong.');
     console.error(error);
+  } finally {
+    setSigning(false);
   }
 };
 
 
+
   return (
-    <div className="max-w-sm mx-auto mt-10 p-4 border rounded-xl">
+    <div className='flex justify-center mx-4'>
+    <div className="max-w-sm mt-10 p-4 border rounded-xl">
       <form onSubmit={handleSubmit}>
         <label className="font-semibold block" htmlFor="username">User Name:</label>
         <input
@@ -84,10 +90,31 @@ export default function SignUp() {
         <button
           className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
           type="submit"
-        >
-          Sign Up
+          disabled={signing}
+        >{signing ? (
+            <div className="flex items-center justify-center gap-2">
+              <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+              Signing up...
+            </div>
+          ) : 'Sign up'}
         </button>
       </form>
+    </div>
     </div>
   )
 }

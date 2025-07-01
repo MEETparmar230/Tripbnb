@@ -36,7 +36,7 @@ async function main() {
 }
 
 const sessionOptions = {
-  secret: "yourSecret",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGODB }),
@@ -69,9 +69,7 @@ app.get('/check-auth', (req, res) => {
   console.log("Auth check:", req.isAuthenticated?.(), req.user);
   res.json({ isAuthenticated: req.isAuthenticated?.() ?? false });
 });
-app.get("/whoami", (req, res) => {
-  res.json({ user: req.user || null });
-});
+
 
 app.get("/search", async (req, res) => {
   const { country } = req.query;
@@ -86,8 +84,8 @@ app.get("/search", async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ message: "Something went wrong", error: err.message });
+  console.error("GLOBAL ERROR:", err);
+  res.status(500).json({ message: err.message || "Internal Server Error" });
 });
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));

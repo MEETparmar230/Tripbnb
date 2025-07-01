@@ -89,15 +89,13 @@ const geoRes = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.place
 export const updateForm = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const listing = await Listing.findById(id)
+    const listing = await Listing.findById(id);
     if (!listing) {
       return res.status(404).json({ message: "Listing not found" });
     }
 
     const { title, description, price, location, country } = req.body;
 
-    // Build update object
     const updateData = {
       title,
       description,
@@ -106,24 +104,38 @@ export const updateForm = async (req, res) => {
       country
     };
 
-    if (req.file) {
+    
+    const mapboxToken = process.env.MAPBOX_ACCESSTOKEN;
+    const geoRes = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(location)}.json`, {
+      params: {
+        access_token: mapboxToken,
+      }
+    });
 
-      if (listing.image.filename) {
+    if (!geoRes.data.features || geoRes.data.features.length === 0) {
+      return res.status(400).json({ message: "Invalid location, could not geocode." });
+    }
+
+    const [longitude, latitude] = geoRes.data.features[0].center;
+    updateData.geometry = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
+
+    if (req.file) {
+      if (listing.image?.filename) {
         try {
-          await cloudinary.uploader.destroy(listing.image.filename)
-        }
-        catch (err) {
-          console.log("failed to delete old image from external server")
+          await cloudinary.uploader.destroy(listing.image.filename);
+        } catch (err) {
+          console.log("Failed to delete old image from external server:", err.message);
         }
       }
+
+      updateData.image = {
+        url: req.file.path,
+        filename: req.file.filename
+      };
     }
-
-
-    updateData.image = {
-      url: req.file.path,
-      filename: req.file.filename
-    }
-
 
     const updatedListing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
 
@@ -137,6 +149,8 @@ export const updateForm = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
+
+
 
 
 export const deleteOne = async (req, res) => {
