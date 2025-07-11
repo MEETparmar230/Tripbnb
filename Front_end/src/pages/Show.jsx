@@ -201,7 +201,7 @@ export default function Show({ serverError, setServerError}) {
       <div className="bg-gray-100 min-h-screen pb-5">
 
         {/* Listing Content */}
-        <div className="flex justify-center p-2">
+        <div className="flex justify-center py-2 mx-5 lg:mx-auto">
           <div className="w-200 bg-white rounded-b-xl my-3">
             <img
               className="object-cover w-full md:h-100 lg:h-100 h-50 rounded-t-xl"
@@ -351,7 +351,7 @@ export default function Show({ serverError, setServerError}) {
 
         {/* Review List */}
         {listing.reviews.length > 0 && (
-          <div className="mx-5 md:mx-auto lg:mx-auto max-w-200 bg-white p-5 mb-5 rounded-xl">
+          <div className="mx-5  lg:mx-auto max-w-200 bg-white p-5 mb-5 rounded-xl">
             <h2 className="text-xl font-semibold mb-3">Reviews</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {listing.reviews.map((rv, index) => (
@@ -422,7 +422,7 @@ export default function Show({ serverError, setServerError}) {
 
         {/* Map */}
         {listing.geometry?.coordinates && (
-          <div className="mx-5 lg:mx-auto md:mx-auto max-w-200">
+          <div className="mx-4 lg:mx-auto max-w-200">
             <div
               id="map-container"
               ref={mapContainerRef}
