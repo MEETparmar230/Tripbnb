@@ -14,14 +14,25 @@ export const createReview = async (req, res) => {
     const newReview = new Review(req.body.review);
     newReview.author = req.user._id;
     await newReview.save();
+    await newReview.populate('author', 'username');
 
     listing.reviews.push(newReview);
     await listing.save();
 
     res.status(201).json({
       message: "New Review Saved",
-      review: newReview
+      review: {
+        _id: newReview._id,
+        rating: newReview.rating,
+        comment: newReview.comment,
+        createdAt: newReview.createdAt,
+        author: {
+          _id: newReview.author._id,
+          username: newReview.author.username
+        }
+      }
     });
+
   } catch (err) {
     console.error("🔥 Error in createReview:", err);
     res.status(500).json({ message: "Internal Server Error", error: err.message });
@@ -35,5 +46,5 @@ export const deleteReview = async (req, res) => {
   await Review.findByIdAndDelete(reviewId);
 
   res.status(200).json({ message: "Review deleted successfully" });
- 
+
 }
