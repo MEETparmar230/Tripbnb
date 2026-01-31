@@ -10,8 +10,8 @@ export default function Login({ serverError, setServerError}) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: 'Guest',
+    password: 'Guest@123'
   })
 
   const handleChange = (e) => {
