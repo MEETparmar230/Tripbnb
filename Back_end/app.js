@@ -22,6 +22,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://tripbnb-delta.vercel.app',
+    'https://tripbnb-miths-projects-400b13b2.vercel.app',
   ],
   credentials: true
 }));
