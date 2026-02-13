@@ -5,8 +5,8 @@ TripBNB is a full-stack web application inspired by Airbnb, built using the **ME
 
 ## 🔗 Live Demo
 
-- **Frontend (Vercel):** https://tripbnb-sand.vercel.app
-- **Backend (Render):**  https://tripbnb.onrender.com/
+- **Frontend (Vercel):** https://tripbnb-delta.vercel.app
+- **Backend (Render):**  https://tripbnb-uxys.onrender.com/listings
 
 ---
 
@@ -61,7 +61,7 @@ TripBNB is a full-stack web application inspired by Airbnb, built using the **ME
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/MEETparmar230/tripbnb.git
+   git clone https://gitlab.com/MithP/tripbnb
    cd tripbnb
    ```
 
@@ -97,6 +97,3 @@ TripBNB is a full-stack web application inspired by Airbnb, built using the **ME
 
 ---
 
-## 📜 License
-
-This project is open source and available under the [MIT License](LICENSE).
